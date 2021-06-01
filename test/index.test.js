@@ -2,6 +2,7 @@ import dotenv from "dotenv"
 import supertest from "supertest"
 import server from "../src/server"
 import mongoose from "mongoose"
+import ProductModel from "../src/models/products/index.js"
 dotenv.config()
 
 const request = supertest(server)
@@ -65,6 +66,29 @@ describe("Checking application main endpoints", () => {
         expect(response.status).toBe(400)
         expect(response.body._id).not.toBeDefined()
     })
+
+    it("should test that the /products endpoint is returning valid data after creating", async () => {
+        const response = await request.post("/products").send(validData)
+
+        expect(response.body._id).toBeDefined()
+
+        const product = await ProductModel.findById(response.body._id)
+
+        expect(product.createdAt).toStrictEqual(new Date(response.body.createdAt))
+
+    })
+
+    it("should test that the /products endpoint is returning all the products available", async () => {
+        const productResponse = await request.post("/products").send(validData)
+
+        const response = await request.get("/products")
+
+        const included = response.body.products.some(product => product._id === productResponse.body._id)
+
+        expect(included).toBe(true)
+
+    })
+
 })
 
 beforeAll((done) => {
