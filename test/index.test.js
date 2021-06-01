@@ -56,6 +56,7 @@ describe("Checking application main endpoints", () => {
 
   const invalidData = {
     description: "Test product",
+    notFound: "Not found 404",
   };
 
   it("should check that the /products endpoint is NOT allowing POST requests with invalid data", async () => {
@@ -78,6 +79,17 @@ describe("Checking application main endpoints", () => {
     const productResponse = await request.post("/products").send(validData);
 
     const response = await request.get("/products");
+
+    const included = response.body.products.some(
+      (product) => product._id === productResponse.body._id
+    );
+
+    expect(included).toBe(true);
+  });
+  it("should test that the /products/:id endpoint it didn't find", async () => {
+    const productResponse = await request
+      .post("/products:id")
+      .send(invalidData.notFound);
 
     const included = response.body.products.some(
       (product) => product._id === productResponse.body._id
