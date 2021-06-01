@@ -7,7 +7,7 @@
     "dev": "nodemon -r dotenv/config ./src",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
     "watch": "NODE_OPTIONS=--experimental-vm-modules jest --watchAll",
-    "start": "node -r dotenv/config ./src/index.js"
+    "start": "node ./src/index.js"
   },
   "type": "module",
   "keywords": [],
