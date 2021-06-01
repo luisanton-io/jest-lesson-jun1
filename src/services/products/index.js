@@ -5,8 +5,9 @@ const { Router } = express
 
 const productsRouter = new Router()
 
-productsRouter.get("/", (req, res) => {
-    res.status(200).send({ products: [] })
+productsRouter.get("/", async (req, res) => {
+    const products = await ProductModel.find({})
+    res.status(200).send({ products })
 })
 
 productsRouter.post("/", async (req, res) => {
