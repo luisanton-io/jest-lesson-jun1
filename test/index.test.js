@@ -68,6 +68,13 @@ describe("Checking application main endpoints", () => {
     expect(response.status).toBe(404)
     expect(request._id).not.toBeDefined()
   })
+  it("should accept the requests and update the name", async () => {
+    const response = await request.put("/products/:id")
+    expect(response.status).toBe(203)
+    expect(request.body).toBeDefined()
+    expect(response.body.name).toEqual(validData.description)
+    expect(response.body.name).toStrictEqual({ String })
+  })
   it("should test that the /products endpoint is returning valid data after creating", async () => {
     const response = await request.post("/products").send(validData)
 

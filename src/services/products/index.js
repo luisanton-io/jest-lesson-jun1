@@ -17,6 +17,14 @@ productsRouter.get("/:id", async (req, res) => {
     res.status(404).send({ message: error.message })
   }
 })
+productsRouter.put("/:id", async (req, res) => {
+  const updatedProducts = await ProductModel.findByIdAndUpdate({
+    _id: req.params.id,
+  })
+  if (updatedProducts) {
+    res.status(203).send(updatedProducts)
+  }
+})
 productsRouter.delete("/:id", async (req, res) => {
   const products = await ProductModel.findByIdAndDelete({ _id: req.params.id })
   res.status(204).send("succesfully deleted")
