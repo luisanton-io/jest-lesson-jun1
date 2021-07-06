@@ -89,12 +89,23 @@ describe("Checking application main endpoints", () => {
 
     })
 
+    it("should test that the /products/:id endpoint is returning 404 if the id is missing", async () => {
+        const productResponse = await request.post("/products").send(validData)
+
+        const response = await request.get(`/products/${productResponse._id}`)
+
+
+
+        expect(response).toBeDefined()
+
+    })
+
 })
 
 beforeAll((done) => {
     console.log(process.env.ATLAS_URL)
     mongoose
-        .connect(process.env.ATLAS_URL + "test", { useNewUrlParser: true })
+        .connect(process.env.ATLAS_URL + "/test", { useNewUrlParser: true })
         .then(() => {
             console.log("Successfully connected to Atlas in test.")
             done()

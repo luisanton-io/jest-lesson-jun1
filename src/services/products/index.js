@@ -10,6 +10,18 @@ productsRouter.get("/", async (req, res) => {
     res.status(200).send({ products })
 })
 
+productsRouter.get("/:productId", async (req, res) => {
+    try {
+        let id = req.params.productId
+        console.log(id);
+        const product = await ProductModel.findById(id)
+        if (!product) throw new Error("Invalid data")
+        res.status(200).send(product)
+    } catch (error) {
+        res.status(404).send({ message: error.message })
+    }
+
+})
 productsRouter.post("/", async (req, res) => {
 
     try {
