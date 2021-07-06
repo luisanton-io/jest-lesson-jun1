@@ -3,8 +3,8 @@ import supertest from "supertest"
 import server from "../src/server"
 import mongoose from "mongoose"
 import ProductModel from "../src/models/products/index.js"
-dotenv.config()
 
+dotenv.config()
 const request = supertest(server)
 
 describe("Stage I - Testing the test env", () => {
@@ -57,6 +57,8 @@ describe("Checking application main endpoints", () => {
         expect(response.body.description).toEqual(validData.description)
     })
 
+    
+
     const invalidData = {
         description: "Test product"
     }
@@ -89,6 +91,14 @@ describe("Checking application main endpoints", () => {
 
     })
 
+    it("should check that the /products/:id is returning that product", async () => {
+        const response = await request.post("/products").send(validData)
+        expect(response.status).toBe(201)
+        expect(response.body._id).toBeDefined()
+        const _response = await request.get('/products/' + response.body._id)
+        expect(_response.body.description).toEqual(validData.description)
+    })
+
 })
 
 beforeAll((done) => {
@@ -101,8 +111,8 @@ beforeAll((done) => {
         })
 })
 
-afterAll((done) => {
-    mongoose.connection.dropDatabase(() => {
-        mongoose.connection.close(() => done())
-    })
-})
+// afterAll((done) => {
+//     mongoose.connection.dropDatabase(() => {
+//         mongoose.connection.close(() => done())
+//     })
+// })
