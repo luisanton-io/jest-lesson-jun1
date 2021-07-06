@@ -12,4 +12,5 @@ server.get("/test", (req, res) => {
 
 server.use("/products", productsRouter)
 
+
 export default server
