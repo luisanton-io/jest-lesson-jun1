@@ -94,14 +94,14 @@ describe("Checking application main endpoints", () => {
 beforeAll((done) => {
     console.log(process.env.ATLAS_URL)
     mongoose
-        .connect(process.env.ATLAS_URL + "test", { useNewUrlParser: true })
+        .connect(process.env.ATLAS_URL + "/test", { useNewUrlParser: true })
         .then(() => {
             console.log("Successfully connected to Atlas in test.")
             done()
         })
 })
 
-afterAll(done => {
+afterAll((done) => {
     mongoose.connection.dropDatabase(() => {
         mongoose.connection.close(() => done())
     })
