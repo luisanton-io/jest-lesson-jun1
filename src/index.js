@@ -4,7 +4,7 @@ import server from "./server.js"
 const port = process.env.PORT || 3000
 
 mongoose
-    .connect(process.env.ATLAS_URL + "prd", { useNewUrlParser: true })
+    .connect(process.env.ATLAS_URL + "/prd", { useNewUrlParser: true })
     .then(() => {
         console.log("Connected to Atlas!")
         server.listen(port, () => {
