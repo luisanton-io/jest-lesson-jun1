@@ -12,4 +12,5 @@ const ProductsSchema = new Schema({
     }
 }, { timestamps: true })
 
+
 export default ProductsSchema
