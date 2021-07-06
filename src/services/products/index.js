@@ -11,15 +11,17 @@ productsRouter.get("/", async (req, res) => {
 })
 
 productsRouter.get('/:id', async (req, res) => {
-    const product = await ProductModel.findById(req.params.id)
+    try {
+        const product = await ProductModel.findById(req.params.id)
+        if (!product) {
+            res.status(404).send();
+            return
+        }
 
-    if (!product) {
+        res.status(200).send(product)
+    } catch (error) {
         res.status(404).send();
-        return
     }
-
-    res.status(200).send(product)
-
 })
 
 productsRouter.post("/", async (req, res) => {

@@ -57,7 +57,7 @@ describe("Checking application main endpoints", () => {
         expect(response.body.description).toEqual(validData.description)
     })
 
-    
+
 
     const invalidData = {
         description: "Test product"
@@ -91,12 +91,20 @@ describe("Checking application main endpoints", () => {
 
     })
 
-    it("should check that the /products/:id is returning that product", async () => {
+    it("should check that the /products/:id is returning the correct product (created product)", async () => {
         const response = await request.post("/products").send(validData)
         expect(response.status).toBe(201)
         expect(response.body._id).toBeDefined()
         const _response = await request.get('/products/' + response.body._id)
         expect(_response.body.description).toEqual(validData.description)
+    })
+
+    it("should check that the /products/:id is returning proper error when the id is wrong", async () => {
+        // const response = await request.post("/products").send(validData)
+        // expect(response.status).toBe(201)
+        // expect(response.body._id).toBeDefined()
+        const _response = await request.get('/products/10')
+        expect(_response.status).toBe(404)
     })
 
 })
@@ -111,8 +119,8 @@ beforeAll((done) => {
         })
 })
 
-// afterAll((done) => {
-//     mongoose.connection.dropDatabase(() => {
-//         mongoose.connection.close(() => done())
-//     })
-// })
+afterAll((done) => {
+    mongoose.connection.dropDatabase(() => {
+        mongoose.connection.close(() => done())
+    })
+})
