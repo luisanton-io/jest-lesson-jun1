@@ -10,6 +10,18 @@ productsRouter.get("/", async (req, res) => {
     res.status(200).send({ products })
 })
 
+productsRouter.get('/:id', async (req, res) => {
+    const product = await ProductModel.findById(req.params.id)
+
+    if (!product) {
+        res.status(404).send();
+        return
+    }
+
+    res.status(200).send(product)
+
+})
+
 productsRouter.post("/", async (req, res) => {
 
     try {
