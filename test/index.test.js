@@ -100,13 +100,20 @@ describe("Checking application main endpoints", () => {
     })
 
     it("should check that the /products/:id is returning proper error when the id is wrong", async () => {
-        // const response = await request.post("/products").send(validData)
-        // expect(response.status).toBe(201)
-        // expect(response.body._id).toBeDefined()
-        const _response = await request.get('/products/10')
+        const response = await request.post("/products").send(validData)
+        expect(response.status).toBe(201)
+        expect(response.body._id).toBeDefined()
+        const _response = await request.get(`/products/${response.body._id}10`)
         expect(_response.status).toBe(404)
     })
 
+    it("should check that the /products/:id is returning proper error when the product will be deleted", async () => {
+        const response = await request.post("/products").send(validData)
+        expect(response.status).toBe(201)
+        expect(response.body._id).toBeDefined()
+        const _response = await request.delete(`/products/${response.body._id}`)
+        expect(_response.status).toBe(204)
+    })
 })
 
 beforeAll((done) => {

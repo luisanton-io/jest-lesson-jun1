@@ -24,6 +24,21 @@ productsRouter.get('/:id', async (req, res) => {
     }
 })
 
+productsRouter.delete('/:id', async (req, res) => {
+    try {
+        const product = await ProductModel.findByIdAndDelete(req.params.id)
+        if (product) {
+            res.status(204).send()
+        } else {
+            next(createError(404, `product ${req.params.id} not found`))
+        }
+    } catch (error) {
+        console.log(error)
+        next(createError(500, "An error occurred while deleting product"))
+    }
+})
+
+
 productsRouter.post("/", async (req, res) => {
 
     try {
