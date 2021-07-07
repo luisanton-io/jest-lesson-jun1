@@ -99,6 +99,7 @@ describe("Checking application main endpoints", () => {
         expect(_response.body.description).toEqual(validData.description)
     })
 
+    // When retrieving the /products/:id endpoint with a non existing id:
     it("should check that the /products/:id is returning proper error when the id is wrong", async () => {
         const response = await request.post("/products").send(validData)
         expect(response.status).toBe(201)
@@ -107,12 +108,28 @@ describe("Checking application main endpoints", () => {
         expect(_response.status).toBe(404)
     })
 
+    // When deleting the /products/:id endpoint:
     it("should check that the /products/:id is returning proper error when the product will be deleted", async () => {
         const response = await request.post("/products").send(validData)
         expect(response.status).toBe(201)
         expect(response.body._id).toBeDefined()
         const _response = await request.delete(`/products/${response.body._id}`)
         expect(_response.status).toBe(204)
+    })
+
+    // When updating a /product/:id endpoint with new data:
+    // expect requests to be accepted.
+    // Expect the response.body.name to be changed
+    // Expect the typeof name in response.body to be “string”
+    it("should check When updating a /product/:id endpoint with new data is working", async () => {
+        const response = await request.post("/products").send(validData)
+        expect(response.status).toBe(201)
+        expect(response.body._id).toBeDefined()
+        validData.description = "test2"
+        const _response = await request.put("/products/" + response.body._id).send(validData)
+        expect(_response.status).toBe(200)
+        expect(_response.body.description).toEqual(validData.description)
+        expect(typeof(response.body.description)).toBe('string')
     })
 })
 

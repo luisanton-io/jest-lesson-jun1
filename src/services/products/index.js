@@ -24,20 +24,6 @@ productsRouter.get('/:id', async (req, res) => {
     }
 })
 
-productsRouter.delete('/:id', async (req, res) => {
-    try {
-        const product = await ProductModel.findByIdAndDelete(req.params.id)
-        if (product) {
-            res.status(204).send()
-        } else {
-            next(createError(404, `product ${req.params.id} not found`))
-        }
-    } catch (error) {
-        console.log(error)
-        next(createError(500, "An error occurred while deleting product"))
-    }
-})
-
 
 productsRouter.post("/", async (req, res) => {
 
@@ -55,6 +41,38 @@ productsRouter.post("/", async (req, res) => {
         res.status(400).send({ message: error.message })
     }
 })
+
+productsRouter.delete('/:id', async (req, res) => {
+    try {
+        const product = await ProductModel.findByIdAndDelete(req.params.id)
+        if (product) {
+            res.status(204).send()
+        } else {
+            next(createError(404, `product ${req.params.id} not found`))
+        }
+    } catch (error) {
+        console.log(error)
+        next(createError(500, "An error occurred while deleting product"))
+    }
+})
+
+productsRouter.put("/:id", async (req, res, next) => {
+    try {
+      const product = await ProductModel.findByIdAndUpdate(req.params.id, req.body, {
+        runValidators: true,
+        new: true,
+      })
+      if (product) {
+        res.send(product)
+      } else {
+        next(createError(404, `Student ${req.params.id} not found`))
+      }
+    } catch (error) {
+      console.log(error)
+      next(createError(500, "An error occurred while modifying student"))
+    }
+  })
+  
 
 
 export default productsRouter
